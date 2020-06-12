@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+    web-scrapy:
+        image: 'web-scrapy'
+        container_name: 'web-scrapy'
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        volumes:
+            - ./app/workdir:/workdir
+        networks:
+            - local
+        command: "tail -f /dev/null"
+    
+    db-nosql-scrapy:
+        image: 'mongo'
+        container_name: 'db-nosql-scrapy'
+        restart: unless-stopped
+        ports:
+            - "48888:27017"
+            - "48889:27018"
+            - "48890:27019"
+        volumes:
+            - ./app/db:/data/db
+        environment:
+            - MONGO_INITDB_DATABASE=web-scrapy
+            - MONGO_INITDB_ROOT_USERNAME=webscrapy
+            - MONGO_INITDB_ROOT_PASSWORD=password123
+        networks:
+            - local
+        command: "tail -f /dev/null"
+
+networks:
+    local:
+        driver: bridge
