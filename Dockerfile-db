@@ -1,0 +1,10 @@
+FROM mongo:latest
+
+RUN mkdir ./workdir
+COPY ./mongo-config/start-mongo.sh /workdir/
+COPY ./mongo-config/init-mongo.js /workdir/
+
+#CMD ["./start_mongo.sh"]
+EXPOSE 27017
+
+ 
